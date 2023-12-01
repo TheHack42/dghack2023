@@ -37,19 +37,19 @@ srand(SEED); // Fonction main
 
 # Déroulement du scénario d'attaque
 
-## Lecture du fichier pour obtenir l'adresse de la heap :
+## 1. Lecture du fichier pour obtenir l'adresse de la heap :
 La première étape consiste à utiliser la fonctionnalité de lecture de fichier pour accéder à /proc/self/maps, qui contient les adresses mémoires du programme en cours d'exécution. Cependant, en se limitant à la lecture des 16 premières lignes, seule l'adresse de la heap peut être obtenue, tandis que l'adresse de la stack reste inaccessible.
 
-## Exploitation de la vulnérabilité "Format String" pour le leaking d'adresses cruciales :
+## 2. Exploitation de la vulnérabilité "Format String" pour le leaking d'adresses cruciales :
 Grâce à l'adresse de la heap récupérée, l'exploitation de la vulnérabilité "format string" permet la réécriture de la chaîne de caractères dans la heap. Cette action est stratégique pour le leaking des adresses de la stack et de la libc.
 
-## Écriture d'une ROPchain avec les adresses obtenues :
+## 3. Écriture d'une ROPchain avec les adresses obtenues :
 Une fois en possession des adresses de la stack et de la libc, l'étape suivante consiste à construire une ROPchain, positionnée sur la stack, qui sera exécutée ultérieurement.
 
-## Déclenchement de l'exécution de la ROPchain en perdant une partie :
+## 4. Déclenchement de l'exécution de la ROPchain en perdant une partie :
 Pour déclencher l'exécution de la ROPchain, il suffit de perdre une partie, amenant le programme à atteindre l'instruction de retour.
 
-## Obtention d'un shell par l'exécution de la ROPchain :
+## 5. Obtention d'un shell par l'exécution de la ROPchain :
 L'exécution de la ROPchain entraîne le "pop" d'un shell, fournissant ainsi un accès complet au système et complétant avec succès le scénario d'attaque.
 
 Nous pouvons ainsi exécuter le programme "/readflag"
